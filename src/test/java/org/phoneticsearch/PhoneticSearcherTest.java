@@ -2,7 +2,10 @@ package org.phoneticsearch;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.phoneticsearch.analyser.PhonemeAnalyser;
 import org.phoneticsearch.sanetize.WordCleaner;
+
+import java.util.List;
 
 
 /**
@@ -27,12 +30,6 @@ import org.phoneticsearch.sanetize.WordCleaner;
  */
 public class PhoneticSearcherTest {
 
-    private final char[] firstEquivalentPhonemes = {'A','E','I','O','U'};
-    private final char[] secondEquivalentPhonemes = {'C', 'G', 'J', 'K', 'Q', 'S', 'X', 'Y', 'Z'};
-    private final char[] thirdEquivalentPhonemes = {'B', 'F', 'P', 'V', 'W'};
-    private final char[] fourthEquivalentPhonemes = {'D','T'};
-    private final char[] fifthEquivalentPhonemes = {'M', 'N'};
-
     private final String[] dictionary = {
             "angel",
             "brave",
@@ -49,16 +46,16 @@ public class PhoneticSearcherTest {
 
     @Test
     public void shouldReturnTrueIfAllNonAcceptedCharactersWereRemoved(){
-        String invalidWord = "aabb999ccc";
+        String invalidWord = "1ton#";
 
         WordCleaner wordCleaner = new WordCleaner();
         String validWord = wordCleaner.removeNonAlphabeticalCharacters(invalidWord);
 
-        Assert.assertEquals(validWord, "aabbccc");
+        Assert.assertEquals(validWord, "ton");
     }
 
     @Test
-    public void shouldReturnTrueIfUndesiredCharactersAfterFirstLetterWereRemoved() throws Exception {
+    public void shouldReturnTrueIfUndesiredCharactersAfterFirstLetterWereRemoved() {
         String wordWithUndesiredLetters = "abaAyy";
 
         WordCleaner wordCleaner = new WordCleaner();
@@ -67,6 +64,24 @@ public class PhoneticSearcherTest {
         Assert.assertEquals(acceptedWord,"ab");
     }
 
+    @Test
+    public void shouldReturnTrueIfTwoWordsArePhoneticallyEquivalent() {
+        String sourceWord = "allgood";
+        String targetWord = "allcool";
 
+        PhonemeAnalyser analyser = new PhonemeAnalyser();
 
+        Assert.assertTrue(analyser.isPhoneticallyEquivalent(sourceWord, targetWord));
+    }
+
+    @Test
+    public void shouldReturnTrueIfAWordHasEquivalentsPhoneticallyFromDictionary() {
+        String givenWord = "soon";
+
+        PhonemeAnalyser phonemeAnalyser = new PhonemeAnalyser();
+        List<String> equivalentWords = phonemeAnalyser.getPhoneticallyEquivalentWordsFromDictionary(givenWord, dictionary);
+
+        Assert.assertTrue(equivalentWords.size() > 0);
+
+    }
 }
