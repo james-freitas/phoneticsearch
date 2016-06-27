@@ -1,28 +1,60 @@
 package org.phoneticsearch;
 
-import java.util.stream.IntStream;
+import org.phoneticsearch.analyser.PhonemeAnalyser;
 
-/**
- * Created by james on 22/06/16.
- */
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+
 public class PhoneticSearcher {
 
-    public static void main(String[] args) {
+    private Set<String> inputWords = new HashSet<>();
+    private Set<String> wordsFromDictionary = new HashSet<>();
+    private Map<String, List<String>> inputWordsAndTheirPhoneticallyEquivalentFromDictionary = new HashMap<>();
+    private File dictionary;
 
-        String s = "abcd";
+    private static final Logger logger = Logger.getLogger( PhoneticSearcher.class.getName() );
 
-        char[] chars1 = s.toCharArray();
+    public PhoneticSearcher(List<String> inputWords, File dictionary) {
+        this.inputWords = inputWords.stream().collect(Collectors.toSet());
+        this.dictionary = dictionary;
+    }
+
+    public Map<String,List<String>> getPhoneticallyEquivalentWords() {
+
+        Set<String> dictionaryWords = getDictionaryWordsFromFile(dictionary);
+        List<String> wordMatches = new ArrayList<>();
+
+        PhonemeAnalyser analyser = new PhonemeAnalyser();
 
 
-        IntStream chars = s.chars();
+        for (String word : inputWords) {
+            wordMatches.clear();
+            wordMatches = analyser.getPhoneticallyEquivalentWordsFromDictionary(word, dictionaryWords);
+            if (wordMatches.isEmpty()) {
+                inputWordsAndTheirPhoneticallyEquivalentFromDictionary.put(word, new ArrayList<>());
+            } else {
+                inputWordsAndTheirPhoneticallyEquivalentFromDictionary.put(word, new ArrayList<>(wordMatches));
+            }
+        }
 
+        return inputWordsAndTheirPhoneticallyEquivalentFromDictionary;
+    }
 
-        String t = "aabb123cc";
-        //String result = t.replaceAll("[^a-zA-Z]+", "");
-
-        //t.replaceAll("[^a-zA-Z]+", "").equals("aabbcc");
-
-        System.out.println(t.replaceAll("[^a-zA-Z]+", "").equals("aabbcc"));
-
+    public Set<String> getDictionaryWordsFromFile(File file) {
+        try {
+            Files.lines(Paths.get(file.getPath()), StandardCharsets.UTF_8)
+                 .forEach(wordsFromDictionary::add);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "File path not found." );
+        }
+        return wordsFromDictionary;
     }
 }

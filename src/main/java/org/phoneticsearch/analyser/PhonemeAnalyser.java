@@ -4,35 +4,26 @@ package org.phoneticsearch.analyser;
 import org.phoneticsearch.rules.PhonemeRule;
 import org.phoneticsearch.rules.PhonemeRuleCatalog;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PhonemeAnalyser {
 
-    private final List<String> dictionary = Arrays.asList(
-            "angel",
-            "brave",
-            "Braev",
-            "Don",
-            "Engel",
-            "go",
-            "goal",
-            "son",
-            "sunny",
-            "Tom",
-            "Tooonnnnyyyy");
 
+    public List<String> getPhoneticallyEquivalentWordsFromDictionary(String wordToCheck, Set<String> dictionary) {
 
-    public List<String> getPhoneticallyEquivalentWordsFromDictionary(String wordToCheck, String[] dictionary) {
+        //List<String> matchingWords = new ArrayList<>();
 
-        List<String> matchingWords = new ArrayList<>();
+        List<String> matchingWords = dictionary.stream()
+                .filter(dictionaryWord -> isPhoneticallyEquivalent(wordToCheck, dictionaryWord))
+                .collect(Collectors.toList());
 
-        for (String dictionaryWord : dictionary ) {
+        /*for (String dictionaryWord : dictionary ) {
             if (isPhoneticallyEquivalent(wordToCheck, dictionaryWord)) {
                 matchingWords.add(dictionaryWord);
             }
-        }
+        }*/
         return matchingWords;
     }
 

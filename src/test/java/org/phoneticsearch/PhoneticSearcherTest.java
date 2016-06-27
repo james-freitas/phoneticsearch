@@ -1,87 +1,37 @@
 package org.phoneticsearch;
 
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.phoneticsearch.analyser.PhonemeAnalyser;
-import org.phoneticsearch.sanetize.WordCleaner;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-
-/**
- * 1. Todo caracter não alfabético deve ser ignorado
- *
- * 2. Não deve haver diferença entre letras minúsculas e maiúsculas
- *
- * 3. Depois da primeira letra, qualquer uma das seguintes letras devem ser
- descartadas: A, E, I, H, O, U, W, Y.
- *
- * 4. Os seguintes conjuntos de letras são considerados equivalentes:
- {A, E, I, O, U}
- {C, G, J, K, Q, S, X, Y, Z}
- {B, F, P, V, W}
- {D, T}
- {M, N}
- Todas as outras letras não tem equivalente
-
- 5. Quaisquer ocorrências consecutivas de letras equivalentes (depois de descartas as
- letras no passo 3) são consideradas como uma ocorrência única.
- *
- */
 public class PhoneticSearcherTest {
 
-    private final String[] dictionary = {
-            "angel",
-            "brave",
-            "Braev",
-            "Don",
-            "Engel",
-            "go",
-            "goal",
-            "son",
-            "sunny",
-            "Tom",
-            "Tooonnnnyyyy"
-    };
 
-    @Test
-    public void shouldReturnTrueIfAllNonAcceptedCharactersWereRemoved(){
-        String invalidWord = "1ton#";
+    private PhoneticSearcher phoneticSearcher;
 
-        WordCleaner wordCleaner = new WordCleaner();
-        String validWord = wordCleaner.removeNonAlphabeticalCharacters(invalidWord);
+    @Before
+    public void setUp() {
 
-        Assert.assertEquals(validWord, "ton");
+        List<String> inputWords = new ArrayList<>();
+        inputWords.add("1ton#");
+        inputWords.add("brief");
+        inputWords.add("soon");
+
+        ClassLoader loader = getClass().getClassLoader();
+        File dictionary = new File(loader.getResource("word_dict.txt").getFile());
+
+        phoneticSearcher = new PhoneticSearcher(inputWords, dictionary);
     }
 
-    @Test
-    public void shouldReturnTrueIfUndesiredCharactersAfterFirstLetterWereRemoved() {
-        String wordWithUndesiredLetters = "abaAyy";
-
-        WordCleaner wordCleaner = new WordCleaner();
-        String acceptedWord = wordCleaner.removeUndesiredLettersAfterFirstLetter(wordWithUndesiredLetters);
-
-        Assert.assertEquals(acceptedWord,"ab");
-    }
 
     @Test
-    public void shouldReturnTrueIfTwoWordsArePhoneticallyEquivalent() {
-        String sourceWord = "allgood";
-        String targetWord = "allcool";
+    public void shouldGetEquivalentWordsFromDictionary() {
+        Map<String, List<String>> equivalentWords = phoneticSearcher.getPhoneticallyEquivalentWords();
 
-        PhonemeAnalyser analyser = new PhonemeAnalyser();
-
-        Assert.assertTrue(analyser.isPhoneticallyEquivalent(sourceWord, targetWord));
-    }
-
-    @Test
-    public void shouldReturnTrueIfAWordHasEquivalentsPhoneticallyFromDictionary() {
-        String givenWord = "soon";
-
-        PhonemeAnalyser phonemeAnalyser = new PhonemeAnalyser();
-        List<String> equivalentWords = phonemeAnalyser.getPhoneticallyEquivalentWordsFromDictionary(givenWord, dictionary);
-
-        Assert.assertTrue(equivalentWords.size() > 0);
 
     }
 }
