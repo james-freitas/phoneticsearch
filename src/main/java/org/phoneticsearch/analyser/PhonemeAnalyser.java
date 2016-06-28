@@ -14,11 +14,7 @@ public class PhonemeAnalyser {
 
     private static final WordCleaner wordCleaner = new WordCleaner();
 
-
     public List<String> getEquivalentWordsFromDictionary(String wordToCheck, Set<String> dictionary) {
-
-        //List<String> matchingWords = new ArrayList<>();
-
 
         String cleanedWord = wordCleaner.sanetizeWord(wordToCheck);
 

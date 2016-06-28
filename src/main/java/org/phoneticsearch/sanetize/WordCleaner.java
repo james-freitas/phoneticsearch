@@ -1,9 +1,6 @@
 package org.phoneticsearch.sanetize;
 
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class WordCleaner {
 
     private static final String nonAcceptedPattern = "[^a-zA-Z]";
@@ -29,10 +26,4 @@ public class WordCleaner {
         return rawWord;
     }
 
-    public List<String> sanetizeWordList(List<String> wordList){
-        return wordList
-                .stream()
-                .map(s -> sanetizeWord(s))
-                .collect(Collectors.toList());
-    }
 }

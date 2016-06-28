@@ -1,7 +1,6 @@
 package org.phoneticsearch;
 
 import org.phoneticsearch.analyser.PhonemeAnalyser;
-import org.phoneticsearch.sanetize.WordCleaner;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +21,8 @@ public class PhoneticSearcher {
     private File dictionary;
 
     private static final Logger logger = Logger.getLogger( PhoneticSearcher.class.getName() );
+    private static final PhonemeAnalyser phonemeAnalyser = new PhonemeAnalyser();
+
 
     public PhoneticSearcher(List<String> inputWords, File dictionary) {
         this.inputWords = inputWords.stream().collect(Collectors.toSet());
@@ -38,20 +39,15 @@ public class PhoneticSearcher {
     }
 
     private void executePhoneticSearch(Set<String> dictionaryWords, Set<String> words) {
-        PhonemeAnalyser analyser = new PhonemeAnalyser();
 
         List<String> wordMatches = new ArrayList<>();
         for (String word : words) {
             wordMatches.clear();
-            wordMatches = analyser.getEquivalentWordsFromDictionary(word, dictionaryWords);
+            wordMatches = phonemeAnalyser.getEquivalentWordsFromDictionary(word, dictionaryWords);
             inputWordsAndMatchesFromDictionary.put(word, new ArrayList<>(wordMatches));
         }
     }
 
-   /* private List<String> prepareWords() {
-        WordCleaner cleaner = new WordCleaner();
-        return cleaner.sanetizeWordList(inputWords.stream().collect(Collectors.toList()));
-    }*/
 
     public Set<String> getDictionaryWordsFromFile(File file) {
         try {
@@ -61,5 +57,10 @@ public class PhoneticSearcher {
             logger.log(Level.SEVERE, "File path not found." );
         }
         return wordsFromDictionary;
+    }
+
+    public void printAllPhoneticallyEquivalentWords() {
+        inputWordsAndMatchesFromDictionary.forEach((k,v) ->
+                System.out.println(k + ": " + v.toString().replaceAll("[\\[\\]]+","")));
     }
 }

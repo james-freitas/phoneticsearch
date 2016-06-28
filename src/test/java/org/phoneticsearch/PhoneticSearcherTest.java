@@ -35,6 +35,8 @@ public class PhoneticSearcherTest {
 
         System.out.println(equivalentWords);
 
+        phoneticSearcher.printAllPhoneticallyEquivalentWords();
+
         Assert.assertTrue(equivalentWords.size() > 0);
 
     }
