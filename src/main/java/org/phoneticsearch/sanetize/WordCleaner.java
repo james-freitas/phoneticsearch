@@ -1,6 +1,9 @@
 package org.phoneticsearch.sanetize;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class WordCleaner {
 
     private static final String nonAcceptedPattern = "[^a-zA-Z]";
@@ -18,5 +21,18 @@ public class WordCleaner {
         wordToClean = wordToClean.replaceAll(nonAcceptedPatternAfterFirstLetter, "");
 
         return result.append(wordToClean).toString();
+    }
+
+    public String sanetizeWord(String rawWord){
+        rawWord = removeNonAlphabeticalCharacters(rawWord);
+        rawWord = removeUndesiredLettersAfterFirstLetter(rawWord);
+        return rawWord;
+    }
+
+    public List<String> sanetizeWordList(List<String> wordList){
+        return wordList
+                .stream()
+                .map(s -> sanetizeWord(s))
+                .collect(Collectors.toList());
     }
 }

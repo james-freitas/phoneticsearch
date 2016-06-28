@@ -45,7 +45,7 @@ public class PhonemeAnalyserTest {
         String givenWord = "soon";
 
         PhonemeAnalyser phonemeAnalyser = new PhonemeAnalyser();
-        List<String> equivalentWords = phonemeAnalyser.getPhoneticallyEquivalentWordsFromDictionary(givenWord, dictionary);
+        List<String> equivalentWords = phonemeAnalyser.getEquivalentWordsFromDictionary(givenWord, dictionary);
 
         Assert.assertTrue(equivalentWords.size() > 0);
     }

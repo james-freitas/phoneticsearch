@@ -1,5 +1,6 @@
 package org.phoneticsearch;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +33,9 @@ public class PhoneticSearcherTest {
     public void shouldGetEquivalentWordsFromDictionary() {
         Map<String, List<String>> equivalentWords = phoneticSearcher.getPhoneticallyEquivalentWords();
 
+        System.out.println(equivalentWords);
+
+        Assert.assertTrue(equivalentWords.size() > 0);
 
     }
 }

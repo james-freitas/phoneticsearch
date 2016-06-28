@@ -3,27 +3,33 @@ package org.phoneticsearch.analyser;
 
 import org.phoneticsearch.rules.PhonemeRule;
 import org.phoneticsearch.rules.PhonemeRuleCatalog;
+import org.phoneticsearch.sanetize.WordCleaner;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PhonemeAnalyser {
 
+    private static final WordCleaner wordCleaner = new WordCleaner();
 
-    public List<String> getPhoneticallyEquivalentWordsFromDictionary(String wordToCheck, Set<String> dictionary) {
+
+    public List<String> getEquivalentWordsFromDictionary(String wordToCheck, Set<String> dictionary) {
 
         //List<String> matchingWords = new ArrayList<>();
 
+
+        String cleanedWord = wordCleaner.sanetizeWord(wordToCheck);
+
         List<String> matchingWords = dictionary.stream()
-                .filter(dictionaryWord -> isPhoneticallyEquivalent(wordToCheck, dictionaryWord))
+                .filter(dictionaryWord -> isPhoneticallyEquivalent(cleanedWord, dictionaryWord))
                 .collect(Collectors.toList());
 
-        /*for (String dictionaryWord : dictionary ) {
-            if (isPhoneticallyEquivalent(wordToCheck, dictionaryWord)) {
-                matchingWords.add(dictionaryWord);
-            }
-        }*/
+        if(matchingWords.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         return matchingWords;
     }
 
