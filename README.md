@@ -10,16 +10,16 @@ Console application that finds phonetically equivalent words in text file for a 
 
 ## Steps to run the application
 
-1. Clone this repository:
+* Clone this repository:
 ```
 $ git clone https://github.com/james-freitas/phoneticsearch
 ```
-2. Access the folder and run Maven install command
+* Access the folder and run Maven install command
 ```
 $ cd phoneticsearch
 $ mvn install
 ```
-3. Execute the program using Maven
+* Execute the program using Maven
 ```
 $ mvn exec:java -Dexec.args="word1 word2 .. wordN < dictionary_file_path"
 ```
