@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class UserInputValidator {
 
     private static final Logger logger = Logger.getLogger(UserInputValidator.class.getName());
-    private static final String TXT_FILE_PATTERN = "([^\\\\s]+(\\\\.(?i)(txt))$)";
+    private static final String TXT_FILE_PATTERN = "(.+?)(\\.txt)";
 
     public int getValidSeparatorOrShowMessageAndExit(List<String> userInputList) {
         int separatorPosition = userInputList.indexOf("<");

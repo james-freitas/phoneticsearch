@@ -34,5 +34,5 @@ $ mvn exec:java -Dexec.args="word1 word2 .. wordN < dictionary_file_path"
 
 You can run the program against a sample dictionary using the maven command below:
 ```
-$ mvn exec:java -Dexec.args="1ton# brief soon word_dict.txt"
+$ mvn exec:java -Dexec.args="1ton# brief soon < word_dict.txt"
 ```
