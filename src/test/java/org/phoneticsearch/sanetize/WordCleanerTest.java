@@ -1,31 +1,40 @@
 package org.phoneticsearch.sanetize;
 
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class WordCleanerTest {
 
-
+    private final WordCleaner wordCleaner = new WordCleaner();
 
     @Test
-    public void shouldReturnTrueIfAllNonAcceptedCharactersWereRemoved(){
-        String invalidWord = "1ton#";
+    public void shouldRemoveAllNonAcceptedCharactersFromTheWord(){
+        String invalidWord = "1don#";
+        String cleanWord = wordCleaner.removeNonAlphabeticalCharacters(invalidWord);
 
-        WordCleaner wordCleaner = new WordCleaner();
-        String validWord = wordCleaner.removeNonAlphabeticalCharacters(invalidWord);
-
-        Assert.assertEquals(validWord, "ton");
+        assertThat(cleanWord, is(equalTo("don")));
     }
 
     @Test
-    public void shouldReturnTrueIfUndesiredCharactersAfterFirstLetterWereRemoved() {
+    public void shouldRemoveAllUndesiredCharactersAfterFirstLetter() {
         String wordWithUndesiredLetters = "abaAyy";
 
-        WordCleaner wordCleaner = new WordCleaner();
         String acceptedWord = wordCleaner.removeUndesiredLettersAfterFirstLetter(wordWithUndesiredLetters);
 
-        Assert.assertEquals(acceptedWord,"ab");
+        assertThat(acceptedWord, is(equalTo("ab")));
+    }
+
+    @Test
+    public void shouldSanetizeAWord(){
+        String invalidWord = "1ton#";
+
+        String accepteWord = wordCleaner.sanetizeWord(invalidWord);
+
+        assertThat(accepteWord, is(equalTo("t")));
     }
 
 }

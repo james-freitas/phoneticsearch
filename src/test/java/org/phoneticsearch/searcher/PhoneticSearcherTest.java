@@ -1,6 +1,5 @@
 package org.phoneticsearch.searcher;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,6 +7,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PhoneticSearcherTest {
 
@@ -31,13 +33,20 @@ public class PhoneticSearcherTest {
 
     @Test
     public void shouldGetEquivalentWordsFromDictionary() {
-        Map<String, List<String>> equivalentWords = phoneticSearcher.getPhoneticallyEquivalentWords();
+        Map<String, List<String>> equivalentWordsMap = phoneticSearcher.getPhoneticallyEquivalentWords();
+        assertThat(equivalentWordsMap.size(), is(equalTo(3)));
 
-        System.out.println(equivalentWords);
+        List<String> equivalentWordsList = equivalentWordsMap.get("1ton#");
+        assertThat(equivalentWordsList.size(), is(equalTo(3)));
+        assertThat(equivalentWordsList, hasItems("Don", "Tom", "Tooonnnnyyyy"));
 
-        phoneticSearcher.printAllPhoneticallyEquivalentWords();
+        equivalentWordsList = equivalentWordsMap.get("brief");
+        assertThat(equivalentWordsList.size(), is(equalTo(2)));
+        assertThat(equivalentWordsList, hasItems("brave", "Braev"));
 
-        Assert.assertTrue(equivalentWords.size() > 0);
+        equivalentWordsList = equivalentWordsMap.get("soon");
+        assertThat(equivalentWordsList.size(), is(equalTo(4)));
+        assertThat(equivalentWordsList, hasItems("son", "sunny", "go", "goal"));
 
     }
 }
