@@ -54,7 +54,7 @@ public class PhoneticSearcher {
             Files.lines(Paths.get(file.getPath()), StandardCharsets.UTF_8)
                  .forEach(wordsFromDictionary::add);
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "File path not found." );
+            logger.log(Level.SEVERE, "Path of the dictionary file was not found." );
         }
         return wordsFromDictionary;
     }
