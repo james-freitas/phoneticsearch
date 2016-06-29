@@ -1,4 +1,4 @@
-package org.phoneticsearch;
+package org.phoneticsearch.searcher;
 
 import org.phoneticsearch.analyser.PhonemeAnalyser;
 

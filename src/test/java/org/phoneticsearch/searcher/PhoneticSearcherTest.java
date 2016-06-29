@@ -1,4 +1,4 @@
-package org.phoneticsearch;
+package org.phoneticsearch.searcher;
 
 import org.junit.Assert;
 import org.junit.Before;
